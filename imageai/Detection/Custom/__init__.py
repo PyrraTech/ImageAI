@@ -321,7 +321,7 @@ class DetectionModelTrainer:
         elapsed_time = time.time() - since
         print(f"Training completed in {elapsed_time//60:.0f}m {elapsed_time % 60:.0f}s")
         torch.cuda.empty_cache()
-        return ap_per_class_array
+        return mp, mr, map50, map50_95, ap_per_class_array
 
 
 class CustomObjectDetection:
