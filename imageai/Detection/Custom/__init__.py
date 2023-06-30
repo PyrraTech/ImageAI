@@ -305,7 +305,7 @@ class DetectionModelTrainer:
                     mp_array.append(mp)
                     mr_array.append(mr)
                     map50_array.append(map50)
-                    map50_95_array(map50_95)
+                    map50_95_array.append(map50_95)
 
                     print(f"    recall: {mr:0.6f} precision: {mp:0.6f} mAP@0.5: {map50:0.6f}, mAP@0.5-0.95: {map50_95:0.6f}" "\n")
 
