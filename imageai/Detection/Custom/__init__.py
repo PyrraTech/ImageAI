@@ -243,6 +243,10 @@ class DetectionModelTrainer:
         self.__lr_scheduler.last_epoch = -1
 
         ap_per_class_array = []
+        mp_array = []
+        mr_array = []
+        map50_array = []
+        map50_95_array = []
 
         for epoch in range(1, self.__epochs+1):
             self.__optimizer.zero_grad()
@@ -298,6 +302,10 @@ class DetectionModelTrainer:
                                             )
                     
                     ap_per_class_array.append(ap_per_class)
+                    mp_array.append(mp)
+                    mr_array.append(mr)
+                    map50_array.append(map50)
+                    map50_95_array(map50_95)
 
                     print(f"    recall: {mr:0.6f} precision: {mp:0.6f} mAP@0.5: {map50:0.6f}, mAP@0.5-0.95: {map50_95:0.6f}" "\n")
 
