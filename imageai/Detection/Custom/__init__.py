@@ -242,6 +242,13 @@ class DetectionModelTrainer:
 
         self.__lr_scheduler.last_epoch = -1
 
+        ap_per_class_array = []
+        f1_array = []
+        mp_array = []
+        mr_array = []
+        map50_array = []
+        map50_95_array = []
+
         for epoch in range(1, self.__epochs+1):
             self.__optimizer.zero_grad()
             mloss = torch.zeros(3, device=self.__device)
@@ -290,11 +297,18 @@ class DetectionModelTrainer:
                     self.__model.eval()
                     print("Validation:")
 
-                    mp, mr, map50, map50_95 = validate.run(
+                    mp, mr, map50, map50_95, f1, ap_per_class = validate.run(
                                                 self.__model, self.__val_loader,
                                                 self.__num_classes, device=self.__device
                                             )
                     
+                    ap_per_class_array.append(ap_per_class)
+                    f1_array.append(f1)
+                    mp_array.append(mp)
+                    mr_array.append(mr)
+                    map50_array.append(map50)
+                    map50_95_array.append(map50_95)
+
                     print(f"    recall: {mr:0.6f} precision: {mp:0.6f} mAP@0.5: {map50:0.6f}, mAP@0.5-0.95: {map50_95:0.6f}" "\n")
 
                     if map50 > best_fitness:
@@ -317,6 +331,7 @@ class DetectionModelTrainer:
         elapsed_time = time.time() - since
         print(f"Training completed in {elapsed_time//60:.0f}m {elapsed_time % 60:.0f}s")
         torch.cuda.empty_cache()
+        return mp_array, mr_array, map50_array, map50_95_array, f1_array, ap_per_class_array
 
 
 class CustomObjectDetection:
